@@ -23,6 +23,7 @@ export type PostCardProps = {
   shareCount: number;
   commentCount: number;
   likeCount: number;
+  isLiked: boolean;
   mediaUrls?: string[] | null;
   mediaAlt?: string;
   verified?: boolean;
@@ -56,6 +57,7 @@ export function PostCard({
   commentCount,
   shareCount,
   likeCount,
+  isLiked,
   mediaUrls,
   mediaAlt,
   verified,
@@ -87,7 +89,7 @@ export function PostCard({
       className="mt-3 overflow-hidden bg-[var(--surface)] sm:rounded-2xl"
       role="article"
     >
-      <div className="px-4 py-5 sm:px-5">
+      <div className="px-4 pb-2 pt-5 sm:px-5">
         <header className="flex items-start gap-3">
           <div className="flex min-w-0 items-start gap-3">
             {profileHref ? (
@@ -145,6 +147,7 @@ export function PostCard({
           <PostActions
             postId={postId}
             likeCount={likeCount}
+            isLiked={isLiked}
             commentCount={commentCount}
             shareCount={shareCount}
             commentsOpen={commentsOpen}

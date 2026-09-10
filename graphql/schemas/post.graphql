@@ -15,6 +15,7 @@ type Post {
   mediaUrls: [String]
   location: String
   likeCount: Int!
+  isLiked: Boolean!
   commentCount: Int!
   shareCount: Int!
   createdAt: String!
@@ -40,6 +41,13 @@ type CreatePostResponse {
   post: Post
 }
 
+type TogglePostLikeResponse {
+  success: Boolean!
+  message: String!
+  liked: Boolean!
+  post: Post
+}
+
 type Query {
   getNewsFeed(limit: Int, cursor: Int): NewsFeedResponse!
   getUserPosts(userId: Int!, limit: Int, cursor: Int): NewsFeedResponse!
@@ -50,4 +58,5 @@ type Query {
 type Mutation {
   createPost(input: CreatePostInput!): CreatePostResponse!
   deletePost(id: Int!): CreatePostResponse!
+  togglePostLike(postId: Int!): TogglePostLikeResponse!
 }

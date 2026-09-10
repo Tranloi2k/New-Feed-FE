@@ -7,6 +7,7 @@ query GetNewsFeed($limit: Int, $cursor: Int) {
       mediaUrls
       location
       likeCount
+      isLiked
       commentCount
       shareCount
       createdAt
@@ -33,6 +34,7 @@ mutation CreatePost($input: CreatePostInput!) {
       mediaUrls
       location
       likeCount
+      isLiked
       commentCount
       shareCount
       createdAt
@@ -42,6 +44,19 @@ mutation CreatePost($input: CreatePostInput!) {
         fullName
         avatarUrl
       }
+    }
+  }
+}
+
+mutation TogglePostLike($postId: Int!) {
+  togglePostLike(postId: $postId) {
+    success
+    message
+    liked
+    post {
+      id
+      likeCount
+      isLiked
     }
   }
 }

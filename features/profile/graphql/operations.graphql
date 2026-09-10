@@ -6,6 +6,7 @@ query GetUserPosts($userId: Int!, $limit: Int, $cursor: Int) {
       postType
       mediaUrls
       likeCount
+      isLiked
       commentCount
       shareCount
       createdAt

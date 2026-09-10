@@ -134,6 +134,7 @@ export function NewsFeed() {
               time={formatTime(post.createdAt)}
               content={post.content || ""}
               likeCount={post.likeCount}
+              isLiked={post.isLiked}
               shareCount={post.shareCount}
               commentCount={post.commentCount}
               verified={false}

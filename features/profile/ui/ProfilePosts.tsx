@@ -93,6 +93,7 @@ export function ProfilePosts({ userId }: ProfilePostsProps) {
             content={post.content || ""}
             mediaUrls={(post.mediaUrls?.filter(Boolean) as string[]) || []}
             likeCount={post.likeCount}
+            isLiked={post.isLiked}
             shareCount={post.shareCount}
             commentCount={post.commentCount}
           />

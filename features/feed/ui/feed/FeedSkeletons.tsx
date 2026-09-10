@@ -2,7 +2,7 @@ import { Skeleton } from "../primitives/Skeleton";
 
 function PostCardSkeleton() {
   return (
-    <div className="mt-3 bg-[var(--surface)] px-4 py-5 sm:rounded-2xl sm:px-5">
+    <div className="mt-3 bg-[var(--surface)] px-4 pb-2 pt-5 sm:rounded-2xl sm:px-5">
       <div className="flex items-center gap-3">
         <Skeleton className="h-12 w-12 rounded-full" />
         <div className="flex-1 space-y-2">

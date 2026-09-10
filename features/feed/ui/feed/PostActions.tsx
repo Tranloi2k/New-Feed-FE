@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation } from "@apollo/client/react";
 import { motion } from "framer-motion";
 import {
   Bookmark,
@@ -10,10 +11,12 @@ import {
   Share2,
 } from "lucide-react";
 import { cn } from "../utils/cn";
+import { TogglePostLikeDocument } from "@/features/feed/lib/documents";
 
 type PostActionsProps = {
   postId: string;
   likeCount: number;
+  isLiked: boolean;
   commentCount: number;
   shareCount: number;
   onComment: () => void;
@@ -23,15 +26,56 @@ type PostActionsProps = {
 export function PostActions({
   postId,
   likeCount,
+  isLiked,
   commentCount,
   shareCount,
   onComment,
   commentsOpen,
 }: PostActionsProps) {
-  const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [shared, setShared] = useState(false);
-  const displayLikes = liked ? likeCount + 1 : likeCount;
+  const [likeError, setLikeError] = useState<string | null>(null);
+  const [toggleLike, { loading: likeLoading }] = useMutation(
+    TogglePostLikeDocument
+  );
+
+  const handleLike = async () => {
+    setLikeError(null);
+    const nextLiked = !isLiked;
+    const nextLikeCount = Math.max(0, likeCount + (nextLiked ? 1 : -1));
+
+    try {
+      const result = await toggleLike({
+        variables: { postId: Number(postId) },
+        optimisticResponse: {
+          togglePostLike: {
+            __typename: "TogglePostLikeResponse",
+            success: true,
+            message: "",
+            liked: nextLiked,
+            post: {
+              __typename: "Post",
+              id: Number(postId),
+              likeCount: nextLikeCount,
+              isLiked: nextLiked,
+            },
+          },
+        },
+      });
+
+      if (!result.data?.togglePostLike.success) {
+        throw new Error(
+          result.data?.togglePostLike.message || "Không thể cập nhật lượt thích"
+        );
+      }
+    } catch (error) {
+      setLikeError(
+        error instanceof Error ? error.message : "Không thể cập nhật lượt thích"
+      );
+    }
+  };
+
+  const displayLikes = likeCount;
 
   const handleShare = async () => {
     const url = `${window.location.origin}/home#post-${postId}`;
@@ -54,8 +98,8 @@ export function PostActions({
       icon: Heart,
       label: "Thích",
       count: displayLikes,
-      active: liked,
-      onClick: () => setLiked((v) => !v),
+      active: isLiked,
+      onClick: handleLike,
     },
     {
       key: "comment",
@@ -99,13 +143,15 @@ export function PostActions({
             whileTap={{ scale: 0.94 }}
             transition={{ duration: 0.12 }}
             onClick={action.onClick}
+            disabled={action.key === "like" && likeLoading}
             aria-label={action.label}
             aria-pressed={action.key === "like" || action.key === "bookmark" ? action.active : undefined}
             className={cn(
               "flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-2.5 py-2 text-sm font-medium transition-colors duration-150",
               "text-[var(--text-secondary)] hover:bg-[var(--surface-muted)] hover:text-[var(--text-primary)]",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]",
-              action.active && "text-[var(--accent)]"
+              action.active && "text-[var(--accent)]",
+              action.key === "like" && likeLoading && "cursor-wait opacity-60"
             )}
           >
             <action.icon
@@ -122,6 +168,11 @@ export function PostActions({
           </motion.button>
         ))}
       </div>
+      {likeError && (
+        <p className="mt-1 text-xs text-red-600" role="alert">
+          {likeError}
+        </p>
+      )}
     </div>
   );
 }
