@@ -1,4 +1,4 @@
-/** Safe for next/image — http(s) or site-relative paths only. */
+/** Safe for next/image - http(s) or site-relative paths only. */
 export function isValidImageSrc(src: string | null | undefined): boolean {
   if (!src || typeof src !== "string") return false;
   const trimmed = src.trim();

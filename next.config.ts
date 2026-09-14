@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   // WebSocket upgrade before rewrites can proxy the connection.
   skipTrailingSlashRedirect: true,
   async rewrites() {
-    // Do NOT proxy /api/auth/session|csrf|providers|... — those are NextAuth (App Router).
+    // Do NOT proxy /api/auth/session|csrf|providers|... - those are NextAuth (App Router).
     return [
       { source: "/api/auth/login", destination: `${gatewayUrl}/api/auth/login` },
       { source: "/api/auth/signup", destination: `${gatewayUrl}/api/auth/signup` },

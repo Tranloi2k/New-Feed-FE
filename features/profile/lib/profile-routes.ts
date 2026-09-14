@@ -1,4 +1,4 @@
-/** URL slug: `{username}-{id}` — username chỉ [a-zA-Z0-9_], id ở cuối sau dấu `-`. */
+/** URL slug: `{username}-{id}` - username chỉ [a-zA-Z0-9_], id ở cuối sau dấu `-`. */
 
 export function buildProfileSlug(
   username: string,

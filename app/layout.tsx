@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NewFeed — Mạng xã hội hiện đại",
-  description: "Kết nối, chia sẻ và khám phá — trải nghiệm social 2026",
+  title: "NewFeed - Mạng xã hội hiện đại",
+  description: "Kết nối, chia sẻ và khám phá - trải nghiệm social 2026",
 };
 
 export default function RootLayout({
